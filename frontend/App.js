@@ -3,11 +3,12 @@ import axios from "axios";
 import useGeceModu from "./hooks/useGeceModu";
 import Charts from "./components/Charts";
 import Navbar from "./components/Navbar";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 
 const App = () => {
   const [coinData, setCoinData] = useState([]);
   const [geceModu, toggleMode] = useGeceModu(false);
-
+  const [data, writeToLs] = useLocalStorage("geceModu", false);
   useEffect(() => {
     axios
       .get(
@@ -18,6 +19,8 @@ const App = () => {
   }, []);
   return (
     <div className={geceModu ? "dark-mode App" : "App"}>
+      <h3 onClick={() => writeToLs("dark mı modlar")}>localst: {data}</h3>
+
       <Navbar geceModu={geceModu} toggleMode={toggleMode} />
       <Charts coinData={coinData} />
     </div>
